@@ -30,7 +30,7 @@ $urlSegment = Request::segments();
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="#" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link" href="{{url('/dashboard/campaign')}}" aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-money-bill-alt"></i>
             <span>Campaign</span>
         </a>
