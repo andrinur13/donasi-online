@@ -136,17 +136,12 @@ class TransactionController extends Controller
             // get campaign name
             $campaign = CampaignModel::where('id', $item->campaign_id)->first();
 
-            // $item->campaign_name = $campaign->name;
-            return response($campaign);
+            $item->campaign_name = $campaign->name;
         }
 
-        die;
+        $campaign = CampaignModel::where('id', 7)->first();
 
-        return response($transaction);
-        
-        $data = [
-            'transactions' => $transaction
-        ];
+
 
         return response([
             'meta' => [
@@ -154,7 +149,18 @@ class TransactionController extends Controller
                 'code' => 200,
                 'status' => 'success'
             ],
-            'data' => $data
+            'data' => $transaction
         ], 200);
+    }
+
+
+    public function callback(Request $request) {
+
+        $order_id = $request->order_id;
+        $status = $request->transaction_status;
+
+        if($status == 'settlement') {
+            $this->approve($order_id);
+        }
     }
 }

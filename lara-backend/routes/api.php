@@ -27,6 +27,8 @@ Route::get('campaigns/{id}', [CampaignController::class, 'getDetailCampaigns']);
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
 
+Route::post('midtrans/callback', [TransactionController::class, 'callback']);
+
 
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('funding', [TransactionController::class, 'funding']);
