@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
@@ -33,7 +35,7 @@ class UserController extends Controller
             ], 422);
         }
 
-        if (! $token = auth()->attempt($validation->validated())) {
+        if (! $token = JWTAuth::attempt($validation->validated())) {
             return response([
                 'meta' => [
                     'message' => 'unauthorized',
@@ -50,8 +52,12 @@ class UserController extends Controller
                 'code' => 200,
                 'status' => 'success'
             ],
-            'token' => $token
-        ], 401);
+            'data' => [
+                'token' => $token,
+                'name' => JWTAuth::user()->name,
+                'email' => JWTAuth::user()->email
+            ]
+        ], 200);
 
     }
 

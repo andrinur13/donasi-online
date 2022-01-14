@@ -142,4 +142,19 @@ class CampaignController extends Controller
             'data' => $data
         ]);
     }
+
+    public function getDetailCampaigns(Request $request) {
+        $id = $request->id;
+
+        $data = CampaignModel::where('slug', $id)->first();
+
+        return response([
+            'meta' => [
+                'message' => 'Detail of Campaigns',
+                'code' => 200,
+                'status' => 'success'
+            ],
+            'data' => $data
+        ]);
+    }
 }

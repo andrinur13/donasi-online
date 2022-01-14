@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +39,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/campaign/edit/{id}', [CampaignController::class, 'edit']);
             Route::post('/campaign/update/{id}', [CampaignController::class, 'update']);
             Route::get('/campaign/delete/{id}', [CampaignController::class, 'delete']);
+
+            Route::get('/transactions', [TransactionController::class, 'index']);
+            Route::get('/transactions/approve/{id}', [TransactionController::class, 'approve']);
+
         });
     });
 });
