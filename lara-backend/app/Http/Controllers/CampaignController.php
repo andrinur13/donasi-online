@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CampaignImageModel;
 use App\Models\CampaignModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -35,13 +36,19 @@ class CampaignController extends Controller
             'name' => $request->name,
             'short_description' => $request->short_description,
             'description' => $request->description,
-            'goal_amount' => $request->goal_amount
+            'goal_amount' => $request->goal_amount,
+            // 'gambar' => $request->file('gambar')
         ];
+
+        $photo = $request->file('gambar');
+
+        // dd($photo);
 
         $rules = [
             'name' => 'required',
             'short_description' => 'required',
-            'goal_amount' => 'required'
+            'goal_amount' => 'required',
+            // 'gambar' => 'requried|image'
         ];
 
         $validation = Validator::make($data, $rules);
@@ -55,7 +62,26 @@ class CampaignController extends Controller
 
         $data['slug'] = $slug;
 
+
+
+        $nama_file = 'uploads/' . $slug . '.' . $photo->getClientOriginalExtension();
+
+        $photo->move(public_path('uploads/'),  $nama_file);
+        $file_name = $nama_file;
+
+
         $create_campaign = CampaignModel::create($data);
+
+        // dd($create_campaign);
+
+        $campaignimgdata = [
+            'campaign_id' => $create_campaign->id,
+            'file_name' => $nama_file
+        ];
+
+
+        $img_campaign = CampaignImageModel::create($campaignimgdata);
+
 
         if($create_campaign) {
             return redirect('/dashboard/campaign')->with('success', 'Sukses menambah campaign');
@@ -131,7 +157,13 @@ class CampaignController extends Controller
     // api
     // get all campaigns
     public function getAllCamapigns() {
-        $data = CampaignModel::get();
+        $data = CampaignModel::join('campaign_images', 'campaigns.id', 'campaign_images.campaign_id')->select('campaigns.*', 'campaign_images.file_name')->get();
+
+        if($data != null) {
+            foreach($data as $item) {
+                $item->file_name = env('APP_URL') . $item->file_name;
+            } 
+        }
 
         return response([
             'meta' => [
@@ -146,7 +178,11 @@ class CampaignController extends Controller
     public function getDetailCampaigns(Request $request) {
         $id = $request->id;
 
-        $data = CampaignModel::where('slug', $id)->first();
+        $data = CampaignModel::where('slug', $id)->join('campaign_images', 'campaigns.id', 'campaign_images.campaign_id')->select('campaigns.*', 'campaign_images.file_name')->first();
+
+        if($data != null) {
+            $data->file_name = env('APP_URL') . $data->file_name;
+        }
 
         return response([
             'meta' => [

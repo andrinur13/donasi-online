@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-8">
-                            <form action="{{url('/dashboard/campaign/store')}}" method="POST">
+                            <form action="{{url('/dashboard/campaign/store')}}" method="POST" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <label for="name">Nama Campaign</label>
@@ -32,6 +32,12 @@
                                     <label for="goal_amount">Total Fund</label>
                                     <input type="number" class="form-control" id="goal_amount" name="goal_amount">
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="gambar">Gambar</label>
+                                    <input type="file" class="form-control" id="gambar" name="gambar">
+                                </div>
+
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">Tambah Campaign</button>
                                 </div>
