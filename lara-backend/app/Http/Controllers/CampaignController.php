@@ -7,6 +7,8 @@ use App\Models\CampaignModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+use PDF;
+
 class CampaignController extends Controller
 {
     //
@@ -15,11 +17,11 @@ class CampaignController extends Controller
         if($request->query('search_campaign')) {
             $search_key = $request->query('search_campaign');
             $data = [
-                'campaign' => CampaignModel::where('campaigns.name', 'LIKE', '%' . $search_key . '%')->join('users', 'users.id', 'campaigns.id')->select('campaigns.*', 'users.name as pic')->get()
+                'campaign' => CampaignModel::where('campaigns.name', 'LIKE', '%' . $search_key . '%')->select('campaigns.*')->get()
             ];
         } else {
             $data = [
-                'campaign' => CampaignModel::join('users', 'users.id', 'campaigns.id')->select('campaigns.*', 'users.name as pic')->get()
+                'campaign' => CampaignModel::select('campaigns.*')->get()
             ];
         }
         
@@ -192,5 +194,13 @@ class CampaignController extends Controller
             ],
             'data' => $data
         ]);
+    }
+
+    public function report()
+    {
+        $campaign = CampaignModel::all();
+ 
+    	$pdf = PDF::loadview('campaign_pdf',['campaign'=>$campaign]);
+    	return $pdf->download('laporan-campaign.pdf');
     }
 }

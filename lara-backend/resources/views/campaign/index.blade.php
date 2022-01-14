@@ -14,6 +14,10 @@
                             <i class="fas fa-plus"></i>
                             Tambah Data
                         </a>
+                        <a href="{{url('dashboard/campaign/report')}}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-download"></i>
+                            Report
+                        </a>
                     </div>
                     <div>
                         @if(session('error'))

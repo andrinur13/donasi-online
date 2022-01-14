@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/campaign/update/{id}', [CampaignController::class, 'update']);
             Route::get('/campaign/delete/{id}', [CampaignController::class, 'delete']);
 
+            Route::get('/campaign/report', [CampaignController::class, 'report']);
+
             Route::get('/transactions', [TransactionController::class, 'index']);
             Route::get('/transactions/approve/{id}', [TransactionController::class, 'approve']);
 
