@@ -77,7 +77,9 @@
                                                 {{$item->created_at}}
                                             </td>
                                             <td>
+                                                @if($item->status == 'unpaid')
                                                 <a href="{{url('/dashboard/transactions/approve/' . $item->id)}}" class="badge badge-success">Approve</a>
+                                                @endif
                                             </td>
                                         </tr>
                                         @php($i++)
